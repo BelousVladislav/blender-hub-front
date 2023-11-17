@@ -1,0 +1,48 @@
+<div class="RegistrationBlock">
+    <nz-card>
+        <h4 nz-typography>Реєстрація</h4>
+        <form nz-form nzLabelAlign="left" class="register-form" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Будь ласка вкажіть email!!">
+                    <input nz-input formControlName="email" id="email" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="login" nzRequired
+                    nzTooltipTitle="What do you want other to call you">
+                    <span>Логін</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Будь ласка вкажіть логін!">
+                    <input nz-input id="login" formControlName="login" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Пароль</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Будь ласка вкажіть пароль!">
+                    <input nz-input type="password" id="password" formControlName="password"
+                        (ngModelChange)="updateConfirmValidator()" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>Повторіть пароль</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+                    <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+                    <ng-template #errorTpl let-control>
+                        <ng-container *ngIf="control.hasError('required')">Будь ласка вкажіть пароль!</ng-container>
+                        <ng-container *ngIf="control.hasError('minlength')">Пароль повинен містити не менше 8 символів!
+                        </ng-container>
+                        <ng-container *ngIf="control.hasError('confirm')">
+                            Два паролі повинні співпадати!
+                        </ng-container>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row class="register-area">
+                <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                    <button [nzLoading]="isRegisterLoading" nz-button nzType="primary">Зареєструватися</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-card>
+</div>
