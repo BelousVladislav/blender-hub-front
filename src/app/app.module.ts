@@ -23,6 +23,8 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { UserModule } from './pages/user/user.module';
 import { TokenInterceptor } from './pages/auth/token.interceptor';
 import { SubjectService } from './subject.service';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 
 registerLocaleData(uk);
 
@@ -46,7 +48,9 @@ registerLocaleData(uk);
         ProjectModule,
         WorkerModule,
         NzMessageModule,
-        UserModule
+        UserModule,
+        NzAvatarModule,
+        NzTypographyModule
     ],
     providers: [
         { provide: NZ_I18N, useValue: uk_UA },

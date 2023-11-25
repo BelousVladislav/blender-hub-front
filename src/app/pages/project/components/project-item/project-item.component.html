@@ -1,0 +1,21 @@
+<nz-card style="width: 100%;" [nzTitle]="project?.name || ''" [nzExtra]="extraTemplate">
+    <nz-card-tab>
+        <nz-tabset [nzCentered]="true" nzSize="large" [(nzSelectedIndex)]="indexTab">
+            <nz-tab nzTitle="Інфо"></nz-tab>
+            <nz-tab nzTitle="Рендеринг"></nz-tab>
+            <nz-tab nzTitle="Налаштування"></nz-tab>
+        </nz-tabset>
+    </nz-card-tab>
+    <div *ngIf="indexTab === 0">
+        <app-project-item-info></app-project-item-info>
+    </div>
+    <div *ngIf="indexTab === 1">
+        <app-project-item-render [projectId]="projectId"></app-project-item-render>
+    </div>
+    <div *ngIf="indexTab === 2">
+        <app-project-item-setting></app-project-item-setting>
+    </div>
+</nz-card>
+<ng-template #extraTemplate>
+    <!-- <a><button nz-button nzType="primary">Новий рендеринг</button></a> -->
+</ng-template>

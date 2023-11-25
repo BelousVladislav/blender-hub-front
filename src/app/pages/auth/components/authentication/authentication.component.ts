@@ -38,9 +38,8 @@ export class AuthenticationComponent {
             next: (data: { access_token: string }) => {
                 this.access_token = data.access_token;
                 this.authService.setToken(this.access_token);
-                this.subjectService.loginSubject.next(true);
+                this.subjectService.loginSubject.next([true, this.access_token]);
                 this.messageService.createMessage('success', 'Вхід виконано');
-                this.authService.profile().toPromise().then(data => console.log(data))
                 this.router.navigate(['/', 'profile', 'projects'])
             },
             error: (err: any) => {

@@ -64,7 +64,7 @@ export class RegistrationComponent implements OnInit {
     submitForm(): void {
         if (this.validateForm.valid) {
             let user: ICreateUserDto = {
-                userName: this.validateForm.controls['login'].value,
+                login: this.validateForm.controls['login'].value,
                 password: this.validateForm.controls['password'].value,
                 email: this.validateForm.controls['email'].value
             }

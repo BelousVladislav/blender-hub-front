@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 
 export interface IUser {
     id: number;
-    userName: string;
+    login: string;
     email: string;
     password: string;
     client_uuid: string;
@@ -14,9 +14,15 @@ export interface IUser {
     updatedAt: Date;
 }
 export interface ICreateUserDto {
-    userName: string;
-    email: number;
-    password: string;
+    login: string;
+    email: string;
+    password?: string;
+}
+
+export interface IUpdateUserDto extends ICreateUserDto {
+    id: number;
+    client_uuid: string;
+    worker_uuid: string;
 }
 
 @Injectable({
@@ -30,5 +36,21 @@ export class UserService {
 
     public create(createUserDto: ICreateUserDto): Observable<IUser> {
         return this._http.post<IUser>(`${environment.apiKey}user`, createUserDto);
+    }
+
+    public findAll(): Observable<IUser[]> {
+        return this._http.get<IUser[]>(`${environment.apiKey}user`);
+    }
+
+    public findById(id: number): Observable<IUser> {
+        return this._http.get<IUser>(`${environment.apiKey}user/${id}`);
+    }
+
+    public update(updateUserDto: IUpdateUserDto): Observable<IUser> {
+        return this._http.patch<IUser>(`${environment.apiKey}user`, updateUserDto);
+    }
+
+    public remove(id: number): Observable<any> {
+        return this._http.delete<any>(`${environment.apiKey}user/${id}`);
     }
 }

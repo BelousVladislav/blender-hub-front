@@ -1,1 +1,91 @@
-<p>my-data works!</p>
+<nz-card>
+    <form nz-form nzLabelAlign="left" class="register-form" [formGroup]="editForm">
+        <nz-descriptions nzTitle="Мої дані" nzBordered [nzExtra]="extraTpl">
+            <nz-descriptions-item nzTitle="ID">{{user?.id}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Логін">
+                <span *ngIf="!this.isEditMode">{{user?.login}}</span>
+                <nz-form-item *ngIf="this.isEditMode">
+                    <nz-form-control nzErrorTip="Будь ласка вкажіть Логін!!">
+                        <input nz-input formControlName="login" id="login" />
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Пароль">
+                <span *ngIf="!this.isEditMode">*******</span>
+                <nz-space>
+                    <div *nzSpaceItem>
+                        <nz-form-item *ngIf="this.isEditMode">
+                            <nz-form-control nzErrorTip="Будь ласка вкажіть пароль!">
+                                <input nz-input type="password" id="password" formControlName="password"
+                                    (ngModelChange)="updateConfirmValidator()" placeholder="Новий пароль" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div *nzSpaceItem>
+                        <nz-form-item *ngIf="this.isEditMode">
+                            <nz-form-control [nzErrorTip]="errorTpl">
+                                <input nz-input type="password" formControlName="checkPassword" id="checkPassword"
+                                    placeholder="Повторіть пароль" />
+                                <ng-template #errorTpl let-control>
+                                    <ng-container *ngIf="control.hasError('required')">Будь ласка вкажіть пароль!
+                                    </ng-container>
+                                    <ng-container *ngIf="control.hasError('minlength')">Пароль повинен містити не менше
+                                        8
+                                        символів!
+                                    </ng-container>
+                                    <ng-container *ngIf="control.hasError('confirm')">
+                                        Два паролі повинні співпадати!
+                                    </ng-container>
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+
+                </nz-space>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Email">
+                <span *ngIf="!this.isEditMode">{{user?.email}}</span>
+                <nz-form-item *ngIf="this.isEditMode">
+                    <nz-form-control nzErrorTip="Будь ласка вкажіть email!!">
+                        <input nz-input formControlName="email" id="email" />
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="CLIENT_UUID">
+                <span *ngIf="!this.isEditMode">{{user?.client_uuid}}</span>
+                <nz-form-item *ngIf="this.isEditMode">
+                    <nz-form-control nzErrorTip="Будь ласка вкажіть client_uuid!!">
+                        <input nz-input formControlName="client_uuid" id="client_uuid" />
+                        <button nz-button (click)="generateClientUUID()">Generate</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="WORKER_UUID">
+                <span *ngIf="!this.isEditMode">{{user?.worker_uuid}}</span>
+                <nz-form-item *ngIf="this.isEditMode">
+                    <nz-form-control nzErrorTip="Будь ласка вкажіть worker_uuid!!">
+                        <input nz-input formControlName="worker_uuid" id="worker_uuid" />
+                        <button nz-button (click)="generateWorkerUUID()">Generate</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-descriptions-item>
+        </nz-descriptions>
+    </form>
+</nz-card>
+
+<ng-template #extraTpl>
+    <nz-space>
+        <div *nzSpaceItem>
+            <button (click)="onEditButtonCLick()" *ngIf="!isEditMode" nz-button nzType="primary">Редагувати</button>
+        </div>
+        <div *nzSpaceItem>
+            <button (click)="onSaveButtonClick()" *ngIf="isEditMode" nz-button nzType="primary">Зберегти</button>
+        </div>
+        <div *nzSpaceItem>
+            <button *ngIf="isEditMode" (click)="isEditMode=false" nz-button nzType="default">Скасувати</button>
+        </div>
+        <button (click)="logout()" [disabled]="isEditMode" *nzSpaceItem nz-button nzType="default"
+            nzDanger>Вийти</button>
+    </nz-space>
+</ng-template>

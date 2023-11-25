@@ -55,6 +55,12 @@
                         <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
                     </span>
                 </div>
+                <a nz-col *ngIf="!profileVisible" [routerLink]="['/', 'profile', 'info']">
+                    <nz-avatar nzIcon="user" [nzSize]="35" style="background-color:#87d068;"></nz-avatar>
+                    <span nz-typography>
+                        <a style="font-size: 16px; padding: 0 20px 0 7px">{{login}}</a>
+                    </span>
+                </a>
                 <div nz-col *ngIf="profileVisible">
                     <ul nz-menu nzMode="horizontal">
                         <li nz-menu-item nzMatchRouter>

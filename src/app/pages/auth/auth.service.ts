@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import { ICreateUserDto, IUser } from '../user/user.service';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import * as jwt_decode from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    loginSubject = new Subject<boolean>()
     constructor(
-        private _http: HttpClient
+        private _http: HttpClient,
+        private _router: Router
     ) { }
 
     public setToken(access_token: string) {
@@ -21,7 +23,7 @@ export class AuthService {
         return localStorage.getItem('access_token');
     }
 
-    public gremoveToken() {
+    public removeToken() {
         return localStorage.removeItem('access_token');
     }
 
@@ -35,6 +37,16 @@ export class AuthService {
 
     public profile(): Observable<any> {
         return this._http.get<any>(`${environment.apiKey}auth/profile`);
+    }
+
+    public decodedAccessToken(): any {
+        let token = this.getToken();
+        if (!token) this._router.navigate(['/', 'auth', 'authentication']);
+        try {
+            return jwt_decode.jwtDecode(this.getToken()!);
+        } catch (Error) {
+            return null;
+        }
     }
 }
 

@@ -1,1 +1,31 @@
-<p>worker works!</p>
+<nz-card>
+    <nz-table #basicTable [nzData]="workers">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Blender Version</th>
+                <th>OS</th>
+                <th>GPUs</th>
+                <th>Donate</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>SocketID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let worker of basicTable.data">
+                <td>{{worker.id}}</td>
+                <td>{{worker.blenderVersion}}</td>
+                <td>{{worker.os}}</td>
+                <td>{{worker.gpuName}}</td>
+                <td>{{worker.donate}}</td>
+                <td>{{worker.user?.login}}</td>
+                <td>
+                    <nz-badge *ngIf="worker.isOnline" nzStatus="success" nzText="Online"></nz-badge>
+                    <nz-badge *ngIf="!worker.isOnline" nzStatus="error" nzText="Offline"></nz-badge>
+                </td>
+                <td>{{worker.currSocketId}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>

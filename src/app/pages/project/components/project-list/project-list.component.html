@@ -1,0 +1,53 @@
+<nz-card [nzTitle]="isMy?'Мої проекти':'Проекти'" [nzExtra]="cardExtra">
+    <nz-list nzGrid>
+        <div nz-row [nzGutter]="[30, 15]">
+            <div nz-col [nzSpan]="6" *ngFor="let project of projects">
+                <nz-list-item>
+                    <nz-card [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+                        <nz-card-meta [nzTitle]="titleTemplate" [nzDescription]="ovnerTemplate">
+                        </nz-card-meta>
+                    </nz-card>
+                    <ng-template #titleTemplate>
+                        <a class="projectName" [routerLink]="[project.id]">{{project.name}}</a>
+                    </ng-template>
+                    <ng-template #ovnerTemplate>
+                        <span>Від: <a>{{project.user?.login}}</a></span>
+                        <span style="display: block; margin-top:5px">
+                            <nz-tag *ngFor="let tag of project.tagsArr" [nzColor]="tag.color">{{tag.name}}</nz-tag>
+                        </span>
+                    </ng-template>
+                    <ng-template #coverTemplate>
+                        <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
+                    </ng-template>
+                    <ng-template #actionSetting>
+                        <span nz-icon nzType="setting"></span>
+                    </ng-template>
+                    <ng-template #actionEdit>
+                        <span nz-icon nzType="edit"></span>
+                    </ng-template>
+                    <ng-template #actionEllipsis>
+                        <span nz-icon nzType="delete"></span>
+                    </ng-template>
+                </nz-list-item>
+            </div>
+        </div>
+    </nz-list>
+    <nz-pagination style="float: right;" [nzPageIndex]="1" [nzTotal]="projects.length"></nz-pagination>
+</nz-card>
+
+<ng-template #cardExtra>
+    <div style="display: flex;">
+        <nz-space>
+            <nz-input-group *nzSpaceItem [nzSuffix]="suffixIconSearch">
+                <input [(ngModel)]="searchText" type="text" nz-input placeholder="Назва проекту або тег" />
+            </nz-input-group>
+            <div *nzSpaceItem>
+                <button *ngIf="isMy" nz-button nzType="primary"
+                    [routerLink]="['/', 'profile', 'projects', 'create']">Створити проект</button>
+            </div>
+        </nz-space>
+        <ng-template #suffixIconSearch>
+            <span nz-icon nzType="search"></span>
+        </ng-template>
+    </div>
+</ng-template>
