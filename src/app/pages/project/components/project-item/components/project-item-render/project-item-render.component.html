@@ -1,0 +1,75 @@
+<button nz-button [nzType]="'primary'" (click)="showRenderModal(true)"><span>Новий рендеринг</span></button>
+<nz-modal [(nzVisible)]="isRenderModalVisible" (nzOnCancel)="showRenderModal(false)" nzTitle="Новий рендеринг"
+    (nzOnOk)="sendBlenderFileForRender()">
+    <ng-container *nzModalContent>
+        <nz-upload nzType="drag" [nzFileList]="blendFileList" [nzBeforeUpload]="beforeUpload" nzLimit="1">
+            <p class="ant-upload-drag-icon">
+                <span nz-icon style="color: rgb(18, 147, 91);">
+                    <svg t="1700599296707" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" p-id="1579" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="70" height="70">
+                        <path
+                            d="M533.76 563.808c1.952-34.144 18.688-64.256 43.936-85.6a145.344 145.344 0 0 1 93.344-33.696h1.088-0.064c36.256 0 69.6 12.8 94.336 33.696 25.248 21.344 41.952 51.456 43.872 85.536 1.92 35.104-12.16 67.68-36.896 91.872a144.16 144.16 0 0 1-99.872 40.032H672h0.064-1.44a144.32 144.32 0 0 1-100-40.096l0.064 0.064c-24.736-24.192-38.816-56.736-36.896-91.808zM313.6 632.8c0.256 13.408 4.512 39.328 10.912 59.648a315.84 315.84 0 0 0 68.16 117.856l-0.192-0.224a352.448 352.448 0 0 0 116.672 84.48l2.24 0.896c45.312 20.48 98.24 32.448 153.984 32.448h2.304-0.128 0.768c56.224 0 109.6-12.128 157.696-33.92l-2.4 0.96a355.296 355.296 0 0 0 118.56-85.472l0.256-0.288a316.096 316.096 0 0 0 67.296-115.616l0.64-2.24a290.624 290.624 0 0 0 13.664-89.056c0-14.848-1.088-29.44-3.2-43.712l0.192 1.632a303.328 303.328 0 0 0-44.096-119.808l0.736 1.248a333.76 333.76 0 0 0-78.272-86.592l-0.768-0.576h0.096L577.952 108.192c-20.992-16.128-56.288-16.032-79.36 0.096-23.328 16.288-25.984 43.296-5.248 60.384l-0.032 0.032 133.376 108.512-407.168 0.416c-33.632 0.032-65.92 22.112-72.32 50.016-6.56 28.384 16.224 51.936 51.2 52.064v0.096l206.08-0.416-369.248 283.392c-34.688 26.528-45.856 70.752-24.032 98.688 22.176 28.448 69.344 28.512 104.416 0.16l200.704-164.224s-2.944 22.176-2.688 35.456z m515.84 74.272c-41.376 42.144-99.232 66.048-161.92 66.144-62.72 0.16-120.608-23.552-162.016-65.632a192.448 192.448 0 0 1-43.776-67.872l-0.448-1.312a179.136 179.136 0 0 1-10.752-61.76c0-32.416 8.448-62.88 23.264-89.28l-0.48 0.928a202.464 202.464 0 0 1 48.832-58.208l0.384-0.288c40.192-32.768 91.36-50.464 144.896-50.56 53.6-0.096 104.736 17.504 144.992 50.144a199.296 199.296 0 0 1 49.152 58.336c11.904 21.024 19.84 45.728 22.208 72.096l0.064 0.704a180.992 180.992 0 0 1-10.592 78.528l0.416-1.248a194.464 194.464 0 0 1-44.16 69.376z"
+                            fill="#bfbfbf" p-id="1580"></path>
+                    </svg>
+                </span>
+            </p>
+            <p class="ant-upload-text">Натисніть або перетягніть файл у цю область</p>
+            <p class="ant-upload-hint">
+                Підтримка одиночного завантаження. Лише .blend або zip файл
+            </p>
+        </nz-upload>
+    </ng-container>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="showRenderModal(false)">Скасувати</button>
+        <button *ngIf="blendFileList.length >= 1" nz-button nzType="primary" (click)="sendBlenderFileForRender()"
+            [nzLoading]="isLoadingFile">Почати рендеринг</button>
+    </div>
+</nz-modal>
+<div *ngIf="renders.length" style="max-height: 800px; overflow: auto;">
+    <div *ngFor="let render of renders">
+        <nz-divider [nzText]="dividerTitle" nzOrientation="left">
+        </nz-divider>
+        <nz-descriptions nzSize="small" style="margin-bottom: 20px;" nzBordered>
+            <nz-descriptions-item nzTitle="ID">{{render.id}}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Вхідний файл"><a>{{render.inFileOriginalName}}</a>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Вихідний файл"><a>{{render.outFileOriginalName || ''}}</a>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Статус" [nzSpan]="1">
+                <nz-badge *ngIf="render.statusId===1" nzStatus="processing" nzText="Чекає виконавця">
+                </nz-badge>
+                <nz-badge *ngIf="render.statusId===2" nzStatus="processing" nzText="В процесі">
+                </nz-badge>
+                <nz-badge *ngIf="render.statusId===3" nzStatus="success" nzText="Завершено"></nz-badge>
+                <nz-badge *ngIf="render.statusId===4" nzStatus="error" nzText="Завершено з помилкою"></nz-badge>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Початок">{{render.createdAt | date:"dd.MM.yyyy HH:mm:ss"}}
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Кінець"><span *ngIf="render.statusId === 3">{{render.updatedAt |
+                    date:"dd.MM.yyyy HH:mm:ss" }}</span>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Прогрес" [nzSpan]="1">
+                <div>
+                    <nz-progress [nzPercent]="render.progress" nzSize="small" nzType="circle" [nzWidth]="80">
+                    </nz-progress>
+                </div>
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="Результат" [nzSpan]="1">
+                <img *ngIf="render.statusId===3" style="cursor: pointer;" nz-image height="100px"
+                    [nzSrc]="getStaticFile(render.outFileUUIDName)" alt="" />
+            </nz-descriptions-item>
+            <nz-descriptions-item [nzTitle]="render.message?'Повідомлення':'Виконавець'" [nzSpan]="1">
+                <span *ngIf="render.message">{{render.message}}</span>
+                <a *ngIf="!render.message">{{render.workerId}}</a>
+            </nz-descriptions-item>
+        </nz-descriptions>
+        <ng-template #dividerTitle>
+            <span>Рендеринг #{{render.id}}</span>
+            <span *ngIf="render.statusId===3 || render.statusId===4"
+                style="margin-left: 20px; color: rgb(255, 89, 89); cursor: pointer" nz-popconfirm
+                nzPopconfirmTitle="Ви дійсно хочете видалити рендер?" nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="deleteRender(render.id)" nz-icon nzType="delete" nzTheme="outline"></span>
+        </ng-template>
+    </div>
+</div>
