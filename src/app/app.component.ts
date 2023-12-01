@@ -5,7 +5,7 @@ import * as jwt_decode from 'jwt-decode';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.less']
+    styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
     login: string = '';

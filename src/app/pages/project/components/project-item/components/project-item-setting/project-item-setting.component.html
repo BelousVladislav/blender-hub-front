@@ -1,1 +1,61 @@
-<p>project-item-setting works!</p>
+<div nz-row [nzGutter]="[16, 16]">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="18" nzXXl="12">
+        <nz-card>
+            <nz-alert nzType="info"
+                nzMessage="Тут ви можете змінити UUID Project Token. Збережіть UUID Project Token. Він необхідний для рендерингу за допомогою адона Blender."
+                nzShowIcon>
+            </nz-alert>
+            <br>
+            <form nz-form nzLabelAlign="left" class="register-form" [formGroup]="updateForm">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="projectName">Назва проекту:</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Будь ласка вкажіть Назву проекту!!">
+                        <input nz-input formControlName="name" id="projectName" />
+                    </nz-form-control>
+                </nz-form-item><br>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">Опис проекту:</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24">
+                        <nz-textarea-count [nzMaxCharacterCount]="2000">
+                            <textarea nz-input [nzAutosize]="{ minRows:2, maxRows:6 }" formControlName="description"
+                                id="description"></textarea>
+                        </nz-textarea-count>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="tags">Теги проекту:</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24">
+                        <!-- <input nzMode="tags" nz-input formControlName="tags" id="tags" /> -->
+                        <nz-select style="width: 100%" nzMode="tags" formControlName="tags" id="tags">
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item><br>
+                <nz-form-item>
+                    <nz-form-label nzTooltipTitle="Please click 'Get captcha'" [nzSm]="6" [nzXs]="24" nzRequired
+                        nzFor="uuidToken">UUID
+                        Project Token:</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24">
+                        <nz-input-group nzSearch nzSize="default" [nzAddOnAfter]="suffixButton">
+                            <input readonly nz-input formControlName="uuidToken" id="uuidToken" />
+                        </nz-input-group>
+                        <ng-template #suffixButton>
+                            <button (click)="generateUUID()" nz-button nzType="default" nzSize="default"
+                                nzSearch>Generate</button>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item><br>
+            </form>
+            <button (click)="onButtonUpdateClick()" [nzLoading]="isUpdateLoading" nz-button
+                nzType="primary">Зберегти</button>
+        </nz-card>
+    </div>
+    <div nz-col>
+        <nz-card>
+            <button [nzLoading]="isDeleteLoading" nz-popconfirm nzPopconfirmTitle="Ви дійсно хочете видалити проект?"
+                nzPopconfirmPlacement="bottom" (nzOnConfirm)="deleteProject()" *ngIf="myUserId === project!.user!.id"
+                nz-button nzType="primary" nzDanger="">Видалити
+                проект</button>
+        </nz-card>
+
+    </div>
+</div>

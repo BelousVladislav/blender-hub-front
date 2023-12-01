@@ -1,4 +1,5 @@
-<button nz-button [nzType]="'primary'" (click)="showRenderModal(true)"><span>Новий рендеринг</span></button>
+<button *ngIf="myUserId === project?.userId" nz-button [nzType]="'primary'" (click)="showRenderModal(true)"><span>Новий
+        рендеринг</span></button>
 <nz-modal [(nzVisible)]="isRenderModalVisible" (nzOnCancel)="showRenderModal(false)" nzTitle="Новий рендеринг"
     (nzOnOk)="sendBlenderFileForRender()">
     <ng-container *nzModalContent>
@@ -16,7 +17,7 @@
             </p>
             <p class="ant-upload-text">Натисніть або перетягніть файл у цю область</p>
             <p class="ant-upload-hint">
-                Підтримка одиночного завантаження. Лише .blend або zip файл
+                Підтримка одиночного завантаження. Лише .blend або rar файл
             </p>
         </nz-upload>
     </ng-container>
@@ -26,18 +27,21 @@
             [nzLoading]="isLoadingFile">Почати рендеринг</button>
     </div>
 </nz-modal>
-<div *ngIf="renders.length" style="max-height: 800px; overflow: auto;">
+<div *ngIf="renders.length" style="">
     <div *ngFor="let render of renders">
         <nz-divider [nzText]="dividerTitle" nzOrientation="left">
         </nz-divider>
         <nz-descriptions nzSize="small" style="margin-bottom: 20px;" nzBordered>
             <nz-descriptions-item nzTitle="ID">{{render.id}}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Вхідний файл"><a>{{render.inFileOriginalName}}</a>
+            <nz-descriptions-item nzTitle="Вхідний файл"><a
+                    (click)="downloadFile(render.inFileUUIDName, render.inFileOriginalName)">{{render.inFileOriginalName}}</a>
             </nz-descriptions-item>
-            <nz-descriptions-item nzTitle="Вихідний файл"><a>{{render.outFileOriginalName || ''}}</a>
+            <nz-descriptions-item nzTitle="Вихідний файл"><a
+                    (click)="downloadFile(render.outFileUUIDName, render.outFileOriginalName)">{{render.outFileOriginalName
+                    || ''}}</a>
             </nz-descriptions-item>
             <nz-descriptions-item nzTitle="Статус" [nzSpan]="1">
-                <nz-badge *ngIf="render.statusId===1" nzStatus="processing" nzText="Чекає виконавця">
+                <nz-badge *ngIf="render.statusId===1" nzColor="purple" nzText="В черзі">
                 </nz-badge>
                 <nz-badge *ngIf="render.statusId===2" nzStatus="processing" nzText="В процесі">
                 </nz-badge>
@@ -51,7 +55,11 @@
             </nz-descriptions-item>
             <nz-descriptions-item nzTitle="Прогрес" [nzSpan]="1">
                 <div>
-                    <nz-progress [nzPercent]="render.progress" nzSize="small" nzType="circle" [nzWidth]="80">
+                    <nz-progress [nzPercent]="render.progress" nzSize="small" nzType="circle"
+                        *ngIf="render.statusId !== 4" [nzWidth]="80">
+                    </nz-progress>
+                    <nz-progress *ngIf="render.statusId === 4" [nzPercent]="render.progress" nzSize="small"
+                        nzType="circle" nzStatus="exception" [nzWidth]="80">
                     </nz-progress>
                 </div>
             </nz-descriptions-item>
@@ -60,13 +68,14 @@
                     [nzSrc]="getStaticFile(render.outFileUUIDName)" alt="" />
             </nz-descriptions-item>
             <nz-descriptions-item [nzTitle]="render.message?'Повідомлення':'Виконавець'" [nzSpan]="1">
-                <span *ngIf="render.message">{{render.message}}</span>
+                <!-- <span *ngIf="render.message">{{render.message}}</span> -->
+                <nz-alert *ngIf="render.message" nzType="error" [nzMessage]="render.message" nzShowIcon></nz-alert>
                 <a *ngIf="!render.message">{{render.workerId}}</a>
             </nz-descriptions-item>
         </nz-descriptions>
         <ng-template #dividerTitle>
             <span>Рендеринг #{{render.id}}</span>
-            <span *ngIf="render.statusId===3 || render.statusId===4"
+            <span *ngIf="myUserId === project?.userId"
                 style="margin-left: 20px; color: rgb(255, 89, 89); cursor: pointer" nz-popconfirm
                 nzPopconfirmTitle="Ви дійсно хочете видалити рендер?" nzPopconfirmPlacement="bottom"
                 (nzOnConfirm)="deleteRender(render.id)" nz-icon nzType="delete" nzTheme="outline"></span>

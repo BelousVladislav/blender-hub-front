@@ -8,7 +8,7 @@ const routes: Routes = [
     { path: 'docs', loadChildren: () => import('./pages/docs/docs.module').then(m => m.DocsModule) },
     { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule) },
     { path: 'workers', loadChildren: () => import('./pages/worker/worker.module').then(m => m.WorkerModule) },
-    { path: '**', redirectTo: 'projects' },
+    // { path: '**', redirectTo: 'projects' },
 ];
 
 @NgModule({

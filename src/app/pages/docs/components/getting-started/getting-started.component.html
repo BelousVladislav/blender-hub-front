@@ -1,1 +1,72 @@
-<p>getting-started works!</p>
+<div nz-row>
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="22" nzXXl="14">
+        <nz-card nzTitle="Початок роботи">
+            <!-- <h4 nz-typography>Перший крок</h4>
+            <nz-divider></nz-divider> -->
+            <nz-divider nzText="Перший крок" nzOrientation="left"></nz-divider>
+            <h5 nz-typography nzType="success">Вітаємо в Free Blender:)</h5>
+            <p nz-typography>
+                Free Blender - це система двохстороннього ринку, це коли людина може бути як клієнтом так і надавачем
+                послуг. Система допомагає початківцям в області 3D моделювання.
+                Також додаток цікавий для професіоналів, які мають змогу тимчасово надати свої обчислювальні ресурси
+                іншим користувачам. Всім корисно, адже новачки можуть працювати з більш складним функціоналом Blender, а
+                професіонали завдяки системі донатів, можуть отримати "Дякую" на свої криптогаманці або в таких системах
+                як "Buy Me a Coffee" чи "Patreon".
+            </p>
+            <nz-divider nzText="Реєстрація" nzOrientation="left"></nz-divider>
+            <p nz-typography>
+                В першу чергу необхідно пройти реєстрацію в додатку:
+                <span nz-typography>
+                    <a [routerLink]="['/', 'auth', 'registration']">Це ось тут:)</a>
+                </span>
+            </p>
+            <p>
+                <img style="cursor: pointer;margin-left: 20px;max-width: 90%;" nz-image nzSrc="assets/regForm.png"
+                    alt="">
+            </p>
+            <p>Всі поля форми обов'язкові до заповнення!</p>
+            <nz-alert nzType="info"
+                nzMessage="Пароль повинен містити не менше 8 символів та збігатись з повтореним нижче."></nz-alert>
+            <nz-divider nzText="Вхід в систему" nzOrientation="left"></nz-divider>
+            <p nz-typography>
+                Після вдалої реєстрації, можна перейти на сторінку входу для авторизації в системі:
+                <span nz-typography>
+                    <a [routerLink]="['/', 'auth', 'login']">А тепер сюди:)</a>
+                </span>
+            </p>
+            <p nz-typography>
+                <img style="cursor: pointer; margin-left: 20px;max-width: 90%;" nz-image nzSrc="assets/login.png"
+                    alt="">
+            </p>
+            <nz-divider nzText="Редагування профілю" nzOrientation="left"></nz-divider>
+            <p nz-typography>
+                На сторінці
+                <span nz-typography>
+                    <a [routerLink]="['/', 'profile', 'info']">"Профіль"</a>
+                </span>
+                зберігається інформація про користувача. Її можна змінювати, натиснувши на кнопку "Редагувати"
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/editprofile.png" alt=""></p>
+            <nz-divider nzText="Проекти" nzOrientation="left"></nz-divider>
+            <p nz-typography>
+                Одразу ж після авторизації в системі ви отримаєте доступ до <a
+                    [routerLink]="['/', 'projects']"><strong>проектів</strong></a> та
+                рендерингів інших користувачів.
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/projects.png" alt=""></p>
+            <p nz-typography>В карточці проекту можна отримати інформацію про власника, кількість рендерингів, дату
+                остворення та інші...</p>
+            <p>Також в карточці можна завантажити вихідний файл останнього рендерингу, поставити вподобайку або написати
+                коментар.</p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/islandinfo.png" alt=""></p>
+            <p>На вкладці "Рендеринг" зберігається інформація про кожен з рендерингів проекту. У кожного рендеринга є
+                вхідні та вихідні файли які можна завантажити.</p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/islandrender.png" alt=""></p>
+            <nz-divider nzText="Що далі" nzOrientation="left"></nz-divider>
+            <p nz-typography><strong>Див. розділ <a [routerLink]="['/', 'docs', 'howbeclient']">"Як стати
+                        Клієнтом?"</a></strong></p>
+            <p nz-typography><strong>Див. розділ <a [routerLink]="['/', 'docs', 'howbeworker']">"Як стати
+                        Воркером?"</a></strong></p>
+        </nz-card>
+    </div>
+</div>

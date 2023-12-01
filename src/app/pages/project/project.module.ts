@@ -31,9 +31,16 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { ProjectItemInfoComponent } from './components/project-item/components/project-item-info/project-item-info.component';
 import { ProjectItemRenderComponent } from './components/project-item/components/project-item-render/project-item-render.component';
 import { ProjectItemSettingComponent } from './components/project-item/components/project-item-setting/project-item-setting.component';
+import { AuthModule } from '../auth/auth.module';
+import { AuthService } from '../auth/auth.service';
 
 @NgModule({
     declarations: [ProjectComponent, ProjectItemComponent, ProjectListComponent, CreateProjectComponent, ProjectItemInfoComponent, ProjectItemRenderComponent, ProjectItemSettingComponent],
@@ -64,9 +71,15 @@ import { ProjectItemSettingComponent } from './components/project-item/component
         NzDividerModule,
         NzImageModule,
         NzModalModule,
-        NzPopconfirmModule
+        NzPopconfirmModule,
+        NzAlertModule,
+        NzCarouselModule,
+        NzTypographyModule,
+        NzResultModule,
+        AuthModule,
+        NzSpinModule
     ],
-    providers: [ProjectService, RenderService],
+    providers: [ProjectService, RenderService, AuthService],
     exports: [ProjectListComponent]
 })
 export class ProjectModule { }

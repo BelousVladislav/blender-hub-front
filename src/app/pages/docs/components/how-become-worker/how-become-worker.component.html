@@ -1,1 +1,109 @@
-<p>how-become-worker works!</p>
+<div nz-row>
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="22" nzXXl="14">
+        <nz-card nzTitle="Як стати Воркером?">
+            <nz-divider nzText="Підготовка" nzOrientation="left"></nz-divider>
+            <p nz-typography>Воркерами являються особи які надають свої обчислювальні ресурси в короткочасну оренду
+                клієнтам. За таку
+                послугу воркери можуть отримати винагороду в виді донатів через вказані ним сервіси або криптогаманці.
+            </p>
+            <p>Для того щоб стати воркером необхідно:</p>
+            <ul>
+                <li>Стабільне підключення до інтернету;</li>
+                <li>ПК або ноутбук, що має дискретну відеокарту;</li>
+                <li>Програмне забезпечення воркера;</li>
+                <li>Встановлений Node.js;</li>
+                <li>Програма Blender;</li>
+                <li>Встановлений Redis;</li>
+                <li>WinRar архіватор;</li>
+            </ul>
+
+            <nz-divider nzText="Встановлення ПО" nzOrientation="left"></nz-divider>
+            <p nz-typography>Почнемо з <strong>програмного забезпечення воркера</strong>.</p>
+            <p nz-typography>Завантажити програмне забезпечення воркера можливо за посиланням: <a
+                    href="https://github.com/BelousVladislav/blender-hub-worker" target="_blank">FreeBlender Worker</a>
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/downloadworker.png" alt=""></p>
+            <p nz-typography>Натисніть <kbd>Code</kbd> -> <kbd>Download ZIP</kbd> та розархівуйте архів в зручне для вас
+                місце.</p>
+
+            <p nz-typography>Далі, встановлення <strong>Node.js</strong>.</p>
+            <p nz-typography>Для завантаження Node.js необхідно перейти за посиланням: <a href="https://nodejs.org/en"
+                    target="_blank">Download Node.js</a> та написнути кнопку
+                <kbd>Download Node.js</kbd>
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/downloadnodejs.png" alt=""></p>
+
+            <p nz-typography>Далі на черзі <strong>програма Blender</strong>.</p>
+            <p nz-typography>Для завантаження Blender необхідно перейти за посиланням: <a
+                    href="https://www.blender.org/download/" target="_blank">Download Blender</a> та написнути кнопку
+                <kbd>Download Blender</kbd>
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/downloadblender.png" alt=""></p>
+            <p>Завантажену програму встановити за замовчуванням на комп'ютер.</p>
+            <p nz-typography>Далі, встановлення <strong>Redis</strong>.</p>
+            <p nz-typography>Для завантаження та встановлення Redis необхідно перейти за посиланням: <a
+                    href="https://redis.io/docs/install/install-redis/install-redis-on-windows/"
+                    target="_blank">Download Redis</a> та виконувати вказівки заявлені на офіційному сайті.
+            </p>
+            <p nz-typography>Далі, завантаження <strong>архіватора WinRar</strong>.</p>
+            <p nz-typography>Для завантаження WinRar необхідно перейти за посиланням: <a
+                    href="https://www.win-rar.com/start.html?&L=0" target="_blank">Download WinRar</a> та написнути
+                кнопку
+                <kbd>Download WinRar</kbd>
+            </p>
+            <p nz-typography><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/downloadwinrar.png"
+                    alt=""></p>
+            <p nz-typography>WinRar повинен бути встановлений за шляхом <kbd>C:\Program Files\WinRAR</kbd></p>
+            <nz-divider nzText="Налаштування" nzOrientation="left"></nz-divider>
+            <p nz-typography>Повертаємось до раніше встановленого <kbd>програмного забезпечення воркера.</kbd></p>
+            <p nz-typography>В папці проекту знаходиться файл <kbd>.env</kbd>. Його потрібно відкрити на редагування.
+            </p>
+            <p nz-typography>
+                Вміст файлу виглядає наступним чином:
+            </p>
+            <p nz-typography>
+                <code>PORT=6060<br>
+                    BLENDER_PATH=C:\Program Files\Blender Foundation\Blender 4.0\blender<br>
+                    WORKERUUID=89DBA036-7BAD-43F3-93CD-2A0553CF6D94<br>
+                    REDIS_HOST=localhost<br>
+                    REDIS_PORT=6379<br>
+                    CENTRAL_SERVER_KEY=http://213.231.7.96:9000/api/</code>
+            </p>
+            <p nz-typography> Необхідно змінити дві властивості <kbd>BLENDER_PATH</kbd> та <kbd>WORKERUUID</kbd>.</p>
+            <p nz-typography><kbd>BLENDER_PATH</kbd> - це шлях виконуючого файлу <kbd>blender.exe</kbd> на вашому
+                комп'ютері.</p>
+            <p nz-typography><kbd>WORKERUUID</kbd> - це унікальний ідентифікатор клієнта, який під'єднує воркер до
+                системи FreeBlender.</p>
+            <p nz-typography>Знайти цей ідентифікатор можна в додатку на сторінці "Профіль" -> "Мої дані"</p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/workeruuid.png" alt=""></p>
+            <p nz-typography>Після зміни цих властивослей, файл необхідно зберегти та закрити.</p>
+            <nz-divider nzText="Запуск" nzOrientation="left"></nz-divider>
+            <p nz-typography>Для запуска <kbd>воркера</kbd> необхідно з термінала Windows перейти в папку з раніше
+                завантаженим <kbd>програмним забезпеченням воркера</kbd> та виконати наступні команди:</p>
+            <ul>
+                <li nz-typography><code>npm install</code> та натиснути <kbd>Enter</kbd> на клавіатурі.</li>
+                <li nz-typography><code>node ./dist/main.js</code> та натиснути <kbd>Enter</kbd> на клавіатурі.</li>
+            </ul>
+            <p nz-typography>
+
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/workerstart.png" alt=""></p>
+            <p nz-typography>Якщо останній рядок має вигляд: <code>Worker registered!</code> то воркер працює та вже
+                очікує завдання для рендерингу.</p>
+            <nz-divider nzText="Адміністрування" nzOrientation="left"></nz-divider>
+            <p nz-typography>Існує два способи відслідковування стану та виконаних задач воркером:</p>
+            <h5 nz-typography>Термінал</h5>
+            <p nz-typography>За допомогою терміналу в якому було виконано старт воркера, можливо відслідковувати стан та
+                виконані рендеринги:</p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/workerterminaljob.png" alt=""></p>
+            <h5 nz-typography>Веб-додаток воркера</h5>
+            <p nz-typography>Воркер має свій веб-додаток, який доступний за адресою: <a
+                    href="http://127.0.0.1:6060/dashboard" target="_blank">http://127.0.0.1:6060/dashboard</a></p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/workerdashboard.png" alt=""></p>
+            <p nz-typography>Додаток відображає черги та завдання, що згруповані за статусом. Кожне завдання містить
+                інформацію про час початку та завершення виконання завдання, а також веде журнал з інформацією про стан
+                завдання або помилки які сталися під час його виконання.</p>
+        </nz-card>
+    </div>
+
+</div>

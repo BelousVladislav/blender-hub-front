@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProjectService, ICreateProjectDto, IProject } from '../../project.service';
 import { MessageService } from '../../../../message.service';
-
+const { v4: uuidv4 } = require('uuid');
 @Component({
     selector: 'app-create-project',
     templateUrl: './create-project.component.html',
@@ -13,15 +13,18 @@ export class CreateProjectComponent {
     isCreateLoading: boolean = false;
     createForm: FormGroup = this._fb.group({
         name: [null, [Validators.required]],
-        description: [null, []],
-        tags: [null, []],
+        description: [null, [Validators.required]],
+        tags: [null, [Validators.required]],
+        uuidToken: [null, [Validators.required]]
     });
     constructor(
         private _fb: FormBuilder,
         private _router: Router,
         private projectService: ProjectService,
         private messageService: MessageService,
-    ) { }
+    ) {
+        this.generateUUID()
+    }
 
     create(createProjectDto: ICreateProjectDto) {
         this.isCreateLoading = true;
@@ -46,9 +49,16 @@ export class CreateProjectComponent {
             let project: ICreateProjectDto = {
                 name: this.createForm.controls['name'].value,
                 description: this.createForm.controls['description'].value,
-                tags: (this.createForm.controls['tags'].value as string[]).join(' ')
+                tags: (this.createForm.controls['tags'].value as string[]).join(' '),
+                uuidToken: this.createForm.controls['uuidToken'].value
             }
             this.create(project);
+        } else {
+            this.messageService.createMessage('error', `Форма не валідна!`);
         }
+    }
+
+    generateUUID() {
+        this.createForm.controls['uuidToken'].setValue(uuidv4());
     }
 }

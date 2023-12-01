@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { IUser } from '../user/user.service';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IRender } from './render.service';
+import { IComment } from './components/comment.service';
 
 export interface IProject {
     id: number;
@@ -10,9 +12,11 @@ export interface IProject {
     userId: string;
     description: string;
     tags: string;
-    project_uuid: string;
+    uuidToken: string;
     createdAt: Date;
     updatedAt: Date;
+    renders: IRender[];
+    comments: IComment[];
     user?: IUser;
     tagsArr?: {
         name: string,
@@ -24,11 +28,11 @@ export interface ICreateProjectDto {
     name: string;
     description: string;
     tags: string;
+    uuidToken?: string
 }
 
 export interface IUpdateProjectDto extends ICreateProjectDto {
     id: number;
-    project_uuid: string;
 }
 
 @Injectable({

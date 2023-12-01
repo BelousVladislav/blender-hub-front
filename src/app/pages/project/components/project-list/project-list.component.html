@@ -1,45 +1,64 @@
-<nz-card [nzTitle]="isMy?'Мої проекти':'Проекти'" [nzExtra]="cardExtra">
-    <nz-list nzGrid>
-        <div nz-row [nzGutter]="[30, 15]">
-            <div nz-col [nzSpan]="6" *ngFor="let project of projects">
-                <nz-list-item>
-                    <nz-card [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-                        <nz-card-meta [nzTitle]="titleTemplate" [nzDescription]="ovnerTemplate">
-                        </nz-card-meta>
-                    </nz-card>
-                    <ng-template #titleTemplate>
-                        <a class="projectName" [routerLink]="[project.id]">{{project.name}}</a>
-                    </ng-template>
-                    <ng-template #ovnerTemplate>
-                        <span>Від: <a>{{project.user?.login}}</a></span>
-                        <span style="display: block; margin-top:5px">
-                            <nz-tag *ngFor="let tag of project.tagsArr" [nzColor]="tag.color">{{tag.name}}</nz-tag>
-                        </span>
-                    </ng-template>
-                    <ng-template #coverTemplate>
-                        <img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />
-                    </ng-template>
-                    <ng-template #actionSetting>
-                        <span nz-icon nzType="setting"></span>
-                    </ng-template>
-                    <ng-template #actionEdit>
-                        <span nz-icon nzType="edit"></span>
-                    </ng-template>
-                    <ng-template #actionEllipsis>
-                        <span nz-icon nzType="delete"></span>
-                    </ng-template>
-                </nz-list-item>
+<nz-spin style="width: 100%;" [nzSpinning]="isProjectsLoading">
+    <nz-card style="min-height: 500px;" [nzTitle]="titleTampl" [nzExtra]="cardExtra">
+        <nz-list nzGrid>
+            <div nz-row [nzGutter]="[30, 15]">
+                <div nz-col nzXs="24" nzSm="12" nzMd="12" nzLg="8" nzXl="6" nzXXl="4"
+                    *ngFor="let project of filterProjects()">
+                    <nz-list-item>
+                        <nz-card [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+                            <nz-card-meta [nzTitle]="titleTemplate" [nzDescription]="ovnerTemplate">
+                            </nz-card-meta>
+                        </nz-card>
+                        <ng-template #titleTemplate>
+                            <a class="projectName" [routerLink]="[project.id]">{{project.name}}</a>
+                        </ng-template>
+                        <ng-template #ovnerTemplate>
+                            <span>Від: <a (click)="onLoginClick(project.user!.login)">{{project.user?.login}}</a></span>
+                            <span style="display: block; margin-top:5px">
+                                <nz-tag *ngFor="let tag of project.tagsArr" [nzColor]="tag.color">{{tag.name}}</nz-tag>
+                            </span>
+                        </ng-template>
+                        <ng-template #coverTemplate>
+                            <img nz-image height="200px" style="object-fit: cover" alt="example"
+                                [nzSrc]="getPhotoSrc(project)" />
+                        </ng-template>
+                        <ng-template #actionSetting>
+                            <span><span nz-icon nzType="eye"></span><span style="margin-left: 5px;">0</span></span>
+                        </ng-template>
+                        <ng-template #actionEdit>
+                            <span><span nz-icon nzType="like"></span><span style="margin-left: 5px;">0</span></span>
+                        </ng-template>
+                        <ng-template #actionEllipsis>
+                            <span><span nz-icon nzType="comment"></span><span
+                                    style="margin-left: 5px;">{{project.comments.length}}</span></span>
+                        </ng-template>
+                    </nz-list-item>
+                </div>
             </div>
+        </nz-list>
+        <nz-pagination style="float: right;" [nzPageIndex]="1" [nzTotal]="projects.length"></nz-pagination>
+        <div *ngIf="!projects.length && !isProjectsLoading">
+            <nz-result [nzIcon]="'smile-twotone'" nzTitle="Створіть свій перший проект">
+                <div nz-result-extra>
+                    <button *ngIf="isMy" nz-button nzType="primary"
+                        [routerLink]="['/', 'profile', 'projects', 'create']">Створити
+                        проект</button>
+                </div>
+            </nz-result>
         </div>
-    </nz-list>
-    <nz-pagination style="float: right;" [nzPageIndex]="1" [nzTotal]="projects.length"></nz-pagination>
-</nz-card>
-
+    </nz-card>
+</nz-spin>
+<ng-template #titleTampl>
+    <span>{{isMy?'Мої проекти':'Проекти'}}</span>
+    <nz-tag *ngIf="autorSearchText" style="margin-left: 10px;" nzMode="closeable" (nzOnClose)="onCloseAutorTag($event)">
+        {{autorSearchText}}</nz-tag>
+</ng-template>
 <ng-template #cardExtra>
     <div style="display: flex;">
         <nz-space>
             <nz-input-group *nzSpaceItem [nzSuffix]="suffixIconSearch">
-                <input [(ngModel)]="searchText" type="text" nz-input placeholder="Назва проекту або тег" />
+                <input (ngModelChange)="filterProjects()" [(ngModel)]="searchText" type="text" nz-input
+                    placeholder="Назва проекту або тег" />
             </nz-input-group>
             <div *nzSpaceItem>
                 <button *ngIf="isMy" nz-button nzType="primary"

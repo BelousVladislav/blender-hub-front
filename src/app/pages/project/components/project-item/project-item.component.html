@@ -1,21 +1,24 @@
-<nz-card style="width: 100%;" [nzTitle]="project?.name || ''" [nzExtra]="extraTemplate">
+<nz-card style="width: 100%;" [nzTitle]="titleTemplate" [nzExtra]="">
     <nz-card-tab>
         <nz-tabset [nzCentered]="true" nzSize="large" [(nzSelectedIndex)]="indexTab">
             <nz-tab nzTitle="Інфо"></nz-tab>
             <nz-tab nzTitle="Рендеринг"></nz-tab>
-            <nz-tab nzTitle="Налаштування"></nz-tab>
+            <nz-tab nzTitle="Налаштування" *ngIf="myUserId === project?.userId"></nz-tab>
         </nz-tabset>
     </nz-card-tab>
-    <div *ngIf="indexTab === 0">
-        <app-project-item-info></app-project-item-info>
+    <div *ngIf="indexTab === 0 && project">
+        <app-project-item-info [project]="project" [myUserId]="myUserId"></app-project-item-info>
     </div>
-    <div *ngIf="indexTab === 1">
-        <app-project-item-render [projectId]="projectId"></app-project-item-render>
+    <div *ngIf="indexTab === 1 && project">
+        <app-project-item-render [project]="project" [myUserId]="myUserId"></app-project-item-render>
     </div>
-    <div *ngIf="indexTab === 2">
-        <app-project-item-setting></app-project-item-setting>
+    <div *ngIf="indexTab === 2 && project">
+        <app-project-item-setting (onChanged)="onUpdateProject($event)" [project]="project" [myUserId]="myUserId">
+        </app-project-item-setting>
     </div>
 </nz-card>
-<ng-template #extraTemplate>
-    <!-- <a><button nz-button nzType="primary">Новий рендеринг</button></a> -->
+<ng-template #titleTemplate>
+    <span style="cursor: pointer; font-size: 20px;" [routerLink]="['..']" nz-icon nzType="left"
+        nzTheme="outline"></span>
+    <span style="margin-left: 10px; font-size: 20px;">{{project?.name || ''}}</span>
 </ng-template>

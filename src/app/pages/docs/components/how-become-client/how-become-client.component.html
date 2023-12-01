@@ -1,1 +1,88 @@
-<p>how-become-client works!</p>
+<div nz-row>
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="22" nzXXl="14">
+        <nz-card nzTitle="Як стати Клієнтом?">
+            <nz-divider nzText="Створення проекту" nzOrientation="left"></nz-divider>
+            <p nz-typography>
+                З свого профілю ви можете сворити особистий проект, перейшовши за посиланням "Профіль" -> "Мої проекти"
+                -> <a [routerLink]="['/', 'profile', 'projects', 'create']">"Створити проект"</a>
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/crproj.png" alt=""></p>
+            <p nz-typography>"UUID Project Token" генерується при створенні проекту, та надає змогу отримати доступ до
+                нього напряму з
+                Blender за допомогою <a nz-typography href="https://github.com/BelousVladislav/blender-hub-addon"
+                    target="_blank">адона FreeBlender</a>. Цей ключ важливо зберегти, так як він більше не буде
+                з'являтись.</p>
+            <p nz-typography>Після створення проекту можна одразу перейти до його карточки, натиснувши на ім'я проекту.
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/newproj.png" alt=""></p>
+            <nz-divider nzText="Перший рендеринг" nzOrientation="left"></nz-divider>
+            <p nz-typography>Проект виглядає зовсім пустим, тому давайте перейдем на сторінку "Рендеринг", та передамо
+                наш перший
+                blend файл на рендеринг. Для цього натискаєм на кнопку <kbd>Новий рендеринг</kbd></p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/upfile.png" alt=""></p>
+            <p nz-typography>Тут все просто! Завантажуємо потрібний нам .blend чи .rar(якщо є допоміжні матеріали) файл
+                на форму.
+                Починаєм рендеринг натиснувши на кнопку <kbd>Почати рендеринг</kbd></p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/render.png" alt=""></p>
+            <p nz-typography>Далі магія! Файл відправляється до вільного воркера, який розпочинає рендеринг проекту.
+                Результатом є
+                .jpeg
+                файл, який можна завантажити собі.</p>
+            <!-- <nz-divider nzText="Рендеринг архіву" nzOrientation="left"></nz-divider> -->
+            <nz-alert nzType="warning" nzMessage="Рендеринг архіву" [nzDescription]="renderRarAlert" nzShowIcon>
+            </nz-alert>
+            <ng-template #renderRarAlert>
+                <ul>
+                    <li>Підтримується лише файли формату .rar;</li>
+                    <li>Архів повинен містити папку з такою ж назвою як і сам архів. В самій папці повинні бути blend
+                        файл та
+                        допоміжні матеріали проекту;</li>
+                    <li>Допоміжні матеріали проекту повинні мати відносний шлях;</li>
+                </ul>
+            </ng-template>
+            <nz-divider nzText="Управління проектом" nzOrientation="left"></nz-divider>
+            <p nz-typography>На вкладці "Налаштування" ви маєте змогу:</p>
+            <ul>
+                <li>Редагувати інформацію проекту;</li>
+                <li>Видалити проект</li>
+                <li>Згенерувати новий "UUID Project Token"</li>
+            </ul>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/projsetting.png" alt=""></p>
+            <nz-divider nzText="Рендеринг з адоном FreeBlender" nzOrientation="left"></nz-divider>
+            Адон "FreeBlender" дозволяє вам відправляти файл на рендеринг напряму з "Blender". Для встановлення адону
+            перейдіть за посиланням: <a nz-typography href="https://github.com/BelousVladislav/blender-hub-addon"
+                target="_blank">Завантажити FreeBlederAddon</a>
+            <p nz-typography>Натисніть <kbd>Code</kbd> -> <kbd>Download ZIP</kbd></p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/downloadaddon.png" alt=""></p>
+            <p nz-typography>Розархівуйте архів в зручне для вас місце.</p>
+            <p nz-typography>Далі відкрийте програму Blender та перейдіть в налаштування(<kbd>Edit</kbd> ->
+                <kbd>Preferences...</kbd>)
+            </p>
+            <p nz-typography>Перейдіть на вкладку Add-ons та написніть кнопку <kbd>Install...</kbd> Оберіть раніше
+                завантаженний файл та
+                натисніть <kbd>Install Add-on</kbd></p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/installaddon.png" alt=""></p>
+            <p nz-typography>В результаті цих дій адон буде встановлено в Blender</p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/addon.png" alt=""></p>
+            <p>Для відправки файлу на рендеринг, необхідно вказати ProjectId проекту та UUID Project Token(він
+                згенерувався під
+                час створення проекту)</p>
+            <p nz-typography>ProjectId відображається на вкладці проекту "Інфо" -> "Про проект"</p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/projectid.png" alt=""></p>
+            <p nz-typography>Якщо ви забули UUID Project Token, згенеруйте новий. Сторінка проекту -> "Налаштування" ->
+                <kbd>Generate</kbd>
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/generateuuid.png" alt=""></p>
+            <p nz-typography>Тепер під час моделювання в Blender варто лише зберегти файл та натиснути кнопку <kbd>Send
+                    To
+                    FreeBlender</kbd>.
+            </p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/blendersend.png" alt=""></p>
+            <p>Файл буде передано на рендеринг, а ви можете продовжувати працювати над моделлю.</p>
+            <p><img style="cursor: pointer; max-width: 90%;" nz-image nzSrc="assets/blenderrender.png" alt=""></p>
+            <nz-divider nzText="Що далі" nzOrientation="left"></nz-divider>
+            <p nz-typography><strong>Див. розділ <a [routerLink]="['/', 'docs', 'howbeworker']">"Як стати
+                        Воркером?"</a></strong></p>
+        </nz-card>
+    </div>
+</div>

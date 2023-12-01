@@ -10,10 +10,13 @@ import { Router } from '@angular/router';
     providedIn: 'root'
 })
 export class AuthService {
+    userId: number | undefined
     constructor(
         private _http: HttpClient,
         private _router: Router
-    ) { }
+    ) {
+        this.decodedAccessToken()
+    }
 
     public setToken(access_token: string) {
         localStorage.setItem('access_token', access_token);
@@ -24,6 +27,7 @@ export class AuthService {
     }
 
     public removeToken() {
+        this.userId = undefined;
         return localStorage.removeItem('access_token');
     }
 
@@ -41,12 +45,26 @@ export class AuthService {
 
     public decodedAccessToken(): any {
         let token = this.getToken();
-        if (!token) this._router.navigate(['/', 'auth', 'authentication']);
+        // if (!token) this._router.navigate(['/', 'auth', 'authentication']);
         try {
+            let payload = jwt_decode.jwtDecode(this.getToken()!);
+            this.userId = Object(payload).user.id;
             return jwt_decode.jwtDecode(this.getToken()!);
         } catch (Error) {
             return null;
         }
     }
+
+    public getUserIdFromToken(): number {
+        if (this.getToken()) {
+            let payload = jwt_decode.jwtDecode(this.getToken()!);
+            return Object(payload).user.id || 0;
+        } else {
+            return 0;
+        }
+
+    }
+
+
 }
 

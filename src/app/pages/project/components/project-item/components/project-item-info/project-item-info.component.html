@@ -1,1 +1,112 @@
-<p>project-item-info works!</p>
+<div nz-row [nzGutter]="[16, 24]">
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="12" nzXXl="9" class="gutter-row">
+        <nz-card nzBordered *ngIf="photos.length">
+            <div class="main-photo">
+                <img nz-image [nzSrc]="selectedPhoto" *ngIf="selectedPhoto" />
+            </div>
+            <div class="thumbnails">
+                <img *ngFor="let photo of photos" [src]="photo" (click)="selectPhoto(photo)"
+                    [class.active]="photo === selectedPhoto" />
+            </div>
+
+        </nz-card>
+        <nz-card *ngIf="!photos.length" nzBordered>
+            <nz-result nzStatus="info" nzTitle="Проект поки що не має зображень">
+                <div nz-result-extra>
+                </div>
+            </nz-result>
+        </nz-card>
+    </div>
+    <div nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="12" nzXXl="12" class="gutter-row">
+        <div nz-row [nzGutter]="[16, 24]">
+            <div nz-col nzSpan="24">
+                <nz-card nzBordered>
+                    <nz-descriptions nzTitle="Про проект" nzBordered nzSize="small">
+                        <nz-descriptions-item nzTitle="ID">{{project?.id}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Назва" [nzSpan]="2">{{project?.name}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Опис" [nzSpan]="3">{{project?.description}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Теги" [nzSpan]="3">
+                            <nz-tag *ngFor="let tag of project?.tagsArr" [nzColor]="tag.color">{{tag.name}}</nz-tag>
+                        </nz-descriptions-item>
+                        <nz-descriptions-item [nzSpan]="1" nzTitle="Кількість рендерингів">{{project?.renders?.length}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item [nzSpan]="2" nzTitle="Останній рендеринг">{{lastRender?.updatedAt |
+                            date:"dd.MM.yyyy HH:mm:ss"}}</nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Власник" [nzSpan]="1"><a
+                                (click)="onLoginClick(project!.user!.login)">{{project?.user?.login}}</a>
+                        </nz-descriptions-item>
+                        <nz-descriptions-item nzTitle="Email" [nzSpan]="2">{{project?.user?.email}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item [nzSpan]="1" nzTitle="Створено">{{project?.createdAt |
+                            date:"dd.MM.yyyy HH:mm:ss"}}
+                        </nz-descriptions-item>
+                        <nz-descriptions-item [nzSpan]="1" nzTitle="Оновлено">{{project?.updatedAt |
+                            date:"dd.MM.yyyy HH:mm:ss"}}
+                        </nz-descriptions-item>
+                    </nz-descriptions>
+                </nz-card>
+            </div>
+            <div nz-col nzSpan="24">
+                <nz-card nzBordered>
+                    <nz-space>
+                        <div *nzSpaceItem>
+                            <button *ngIf="lastRender" nz-button nzType="primary"
+                                (click)="downloadFile(lastRender.inFileUUIDName || '', lastRender.inFileOriginalName || '')">Завантажити</button>
+                        </div>
+                        <div *nzSpaceItem>
+                            <button [nzType]="likeCounter === 1?'primary':'default'" (click)="addLike()" nz-button
+                                nzDanger><span nz-icon nzType="like"></span>{{likeCounter}}</button>
+                        </div>
+                    </nz-space>
+                    <!-- <span nz-icon nzType="like" nzTheme="outline"></span> -->
+                </nz-card>
+            </div>
+            <div nz-col nzSpan="24">
+                <nz-card nzType="inner" nzTitle="Коментарі" nzBordered>
+                    <nz-input-group *ngIf="myUserId" nzSearch nzSize="default" [nzAddOnAfter]="suffixButton">
+                        <input [(ngModel)]="comment" type="text" nz-input
+                            placeholder="Залиште свій коментар до проекту" />
+                    </nz-input-group>
+                    <ng-template #suffixButton>
+                        <button [nzLoading]="isSendCommentLoading" (click)="sendComment()" nz-button nzType="primary"
+                            nzSearch>Надіслати</button>
+                    </ng-template>
+                    <nz-divider></nz-divider>
+                    <nz-list class="commentarBlock" nzItemLayout="vertical">
+                        <nz-list-item *ngFor="let comment of comments">
+                            <nz-list-item-meta>
+                                <nz-list-item-meta-avatar>
+                                    <nz-avatar [nzText]="comment.user.login[0].toUpperCase()"
+                                        [ngStyle]="{color:'#f56a00', 'background-color':'#fde3cf'}"></nz-avatar>
+                                </nz-list-item-meta-avatar>
+                                <nz-list-item-meta-title>
+                                    <a href="">{{comment.user.login}}</a>
+                                </nz-list-item-meta-title>
+                                <!-- <nz-list-item-meta-description>
+                                    {{comment.user.email}}
+                                </nz-list-item-meta-description> -->
+                            </nz-list-item-meta>
+                            <span style="margin-left: 50px;">{{comment.description}}</span>
+                            <ul nz-list-item-actions>
+                                <nz-list-item-action>
+                                    <span nz-icon nzType="clock-circle" style="margin-right: 8px;"></span>
+                                    {{comment.createdAt | date: "dd.MM.yyyy HH:mm:ss"}}
+                                </nz-list-item-action>
+                                <nz-list-item-action *ngIf="myUserId === comment.userId">
+                                    <span nz-popconfirm nzPopconfirmTitle="Ви дійсно хочете видалити коментар?"
+                                        nzPopconfirmPlacement="bottom" (nzOnConfirm)="deleteComment(comment.id)"
+                                        class="deleteComment" nz-icon nzType="delete" nzTheme="outline"></span>
+                                </nz-list-item-action>
+                            </ul>
+                            <nz-list-item-extra>
+                                <!-- <img width="272" alt="logo"
+                                    src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" /> -->
+                            </nz-list-item-extra>
+                        </nz-list-item>
+                    </nz-list>
+                </nz-card>
+            </div>
+        </div>
+    </div>
+</div>

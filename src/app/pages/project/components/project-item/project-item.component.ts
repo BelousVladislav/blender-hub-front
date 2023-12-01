@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { ProjectService, IProject } from '../../project.service';
 import { MessageService } from '../../../../message.service';
 import { ActivatedRoute } from '@angular/router';
-import { IRender, RenderService } from '../../render.service';
-import { environment } from 'src/environments/environment';
 import { AuthService } from '../../../auth/auth.service';
+import { UnsubscriptionError } from 'rxjs';
 
 @Component({
     selector: 'app-project-item',
@@ -14,22 +12,25 @@ import { AuthService } from '../../../auth/auth.service';
     styleUrls: ['./project-item.component.sass']
 })
 export class ProjectItemComponent implements OnInit {
+    myUserId: number | undefined;
     projectId: number | undefined;
     project: IProject | undefined;
     isLoadingProject: boolean = false;
     isMyProject: boolean = false;
-    indexTab = 1;
+    indexTab = 0;
+    tagsColor: string[] = ['magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple']
 
     constructor(
         private msg: NzMessageService,
         private projectService: ProjectService,
         private messageService: MessageService,
         private authService: AuthService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {
         this.route.queryParams.subscribe(params => {
             this.projectId = this.route.snapshot.params['projectId'];
         });
+        this.myUserId = this.authService.getUserIdFromToken();
     }
 
     ngOnInit(): void {
@@ -41,9 +42,15 @@ export class ProjectItemComponent implements OnInit {
         this.projectService.findById(this.projectId!).subscribe({
             next: (project: IProject) => {
                 this.project = project;
-                this.isMyProject = this.checkIsMyProject(this.project);
-                console.log(this.project);
-                console.log(this.isMyProject);
+                this.project.tagsArr = [];
+                project.tags.split(' ').forEach(tag => {
+                    project.tagsArr?.push({
+                        name: tag,
+                        color: this.getRandomTagColor()
+                    })
+                });
+                // this.isMyProject = this.checkIsMyProject(this.project);
+                // console.log(this.isMyProject);
             },
             error: (err: any) => {
                 console.log(err)
@@ -57,10 +64,28 @@ export class ProjectItemComponent implements OnInit {
         });
     }
 
+    getRandomTagColor() {
+        return this.tagsColor[Math.floor(Math.random() * this.tagsColor.length)];
+    }
+
     checkIsMyProject(project: IProject): boolean {
         let payload = this.authService.decodedAccessToken();
         let userId = payload.user.id;
         return userId === project.user?.id;
+    }
+
+    onUpdateProject(project: IProject) {
+        this.project!.name = project.name;
+        this.project!.description = project.description;
+        this.project!.tags = project.tags;
+        project.tagsArr = [];
+        project.tags.split(' ').forEach(tag => {
+            project.tagsArr?.push({
+                name: tag,
+                color: this.getRandomTagColor()
+            })
+        });
+        this.project!.tagsArr = project.tagsArr
     }
 }
 
